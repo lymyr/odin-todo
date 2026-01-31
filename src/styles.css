@@ -1,0 +1,167 @@
+/* Josh Comeau CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+*:not(dialog) {
+  margin: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+input, button, textarea, select {
+  font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+#root, #__next {
+  isolation: isolate;
+}
+
+/* my css */
+:root {
+  --primary-bg-color: rgb(243, 243, 243);
+  --primary-text-color: rgb(41, 41, 41);
+  --subtle-gray-color: rgb(236, 236, 236);
+  --darker-gray-color: rgb(201, 201, 201);
+  --btn-hover-color: rgb(201, 201, 201);
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: 100vh;
+}
+
+aside {
+  padding:24px 16px;
+  box-shadow: 1px 1px 12px rgb(165, 165, 165);
+  background-color: var(--subtle-gray-color);
+  color: var(--primary-text-color);
+  display: flex;
+  flex-direction: column;
+}
+
+aside header {
+  letter-spacing: -2px;
+  font-size: 36px;
+  font-weight: bold;
+  display: flex;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+#sidebar-section-container button {
+  border: none;
+  text-align: left;
+  padding: 8px 12px;
+  background-color: transparent;
+}
+#sidebar-section-container button:hover {
+  background-color: var(--btn-hover-color);
+}
+
+#sidebar-section-container button.selected {
+  background-color: rgb(165, 165, 165);
+}
+
+#sidebar-section-container > section div {
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar-section-container {
+  display: flex;
+  flex-direction: column;
+  gap:16px;
+}
+
+#sidebar-section-container h3 {
+  border-bottom: 1px solid var(--darker-gray-color);
+  padding-bottom: 2px;
+  margin-bottom: 8px;
+}
+
+#todo-container {
+  padding: 32px;
+}
+
+.proj-header {
+  font-size: 16px;
+  margin-bottom: -12px;
+  font-style: italic;
+  font-weight: 100;
+}
+.task-header {
+  font-size:42px;
+  font-weight: bold;
+}
+
+.popout-deets {
+  display: none;
+  padding: 16px;
+  background-color: var(--darker-gray-color);
+  box-shadow: -2px 2px 4px rgb(145, 145, 145);
+}
+
+.close {
+  background-color: var(--subtle-gray-color);
+  border: none;
+  padding: 4px 8px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.close:hover {
+  background-color: var(--btn-hover-color);
+}
+
+.task-deets {
+  display:flex;
+  flex-direction: column;
+  gap: 8px
+}
+
+.task-deets input, .task-deets textarea {
+  padding: 4px 8px;
+}
+.task-deets textarea {
+  resize: none;
+  min-height: 150px;
+}
+
+.popout-deets .btn-group {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+.popout-deets .btn-group button {
+  width: fit-content;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 16px;
+  font-size: 16px;
+}
+
+.label-input {
+  display:flex;
+  flex-direction: column;
+}
