@@ -16,7 +16,7 @@ appendTaskDeets();
 function appendProjDeets() {
 
 }
-
+openPopup()
 addBtnSelected(tasks);
 addBtnSelected(projects);
 initialLoad();
