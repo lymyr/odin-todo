@@ -36,7 +36,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* my css */
 :root {
-  --primary-bg-color: rgb(243, 243, 243);
+  --primary-bg-color: rgb(250, 250, 250);
   --primary-text-color: rgb(41, 41, 41);
   --subtle-gray-color: rgb(236, 236, 236);
   --darker-gray-color: rgb(201, 201, 201);
@@ -44,6 +44,7 @@ h1, h2, h3, h4, h5, h6 {
 
   font-family: Arial, Helvetica, sans-serif;
 }
+
 body {
   background-color: var(--primary-bg-color);
   color: var(--primary-text-color);
@@ -137,7 +138,7 @@ aside header {
 .task-deets {
   display:flex;
   flex-direction: column;
-  gap: 8px
+  gap: 8px;
 }
 
 .task-deets input, .task-deets textarea {
@@ -164,4 +165,44 @@ aside header {
 .label-input {
   display:flex;
   flex-direction: column;
+}
+
+.label-input:nth-child(4) {
+  flex-direction: row-reverse;
+  justify-content: left;
+  gap:8px
+}
+
+table {
+  border-collapse: collapse;
+  border: 2px solid rgb(140 140 140);
+  font-size: clamp(0.75rem, calc(0.2vw + 0.6rem), 1rem);;
+  width: 100%;
+  box-shadow: 1px 1px 8px rgb(179, 179, 179);
+  margin-bottom: 12px;
+}
+
+th {
+  font-size: clamp(0.9rem, calc(0.2vw + 0.9rem), 1.2rem);
+}
+
+th,
+td {
+  border: 1px solid rgb(160 160 160);
+  width: 80%;
+  padding: 8px 16px;
+}
+td:nth-child(2), th:nth-child(2) {
+  width: 20%;
+}
+td:last-child, th:last-child {
+  width: fit-content;
+}
+td:has(input) {
+  text-align: center;
+}
+td input {
+  --checkbox-size: 16px;
+  height: var(--checkbox-size);
+  width: var(--checkbox-size);
 }

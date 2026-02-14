@@ -1,8 +1,6 @@
 import './styles.css';
-import { ToDo } from "./ToDo.js";
-import { navbar, addBtnSelected, projects, tasks } from './Navbar.js';
-import { closePopup, openPopup, appendTaskDeets } from './TasksBar.js';
-import { taskList } from './Tasks.js';
+import { addBtnSelected, projects, tasks } from './Navbar.js';
+import { openPopup, appendTaskDeets } from './TasksBar.js';
 
 // set initial stuffs to avoid errors
 function initialLoad() {
@@ -13,9 +11,6 @@ function initialLoad() {
 }
 
 appendTaskDeets();
-function appendProjDeets() {
-
-}
 openPopup()
 addBtnSelected(tasks);
 addBtnSelected(projects);

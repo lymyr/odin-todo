@@ -35,7 +35,12 @@ class ToDoList {
 }
 
 const ProjList = (() => {
-    const list = [];
+    const list = [
+        {
+            title: "Default Project",
+            tasks: new ToDoList(),
+        }
+    ];
 
     const sortAsc = () => {
         list.sort()
@@ -45,9 +50,20 @@ const ProjList = (() => {
         list.sort((a, b) => a < b)
     };
 
-    const add = (title) => {
-        if (!list.includes(title)) list.push(title);
-        else console.log(`"${title}" already exists`);
+    const add = (projTitle) => {
+        let create = true;
+        list.forEach((proj) => {
+            if (proj.title == projTitle) {
+                alert(`"${projTitle}" already exists`);
+                create = false;
+            }
+        });
+        if (create) {
+            list.push({
+                title: projTitle, 
+                tasks: new ToDoList()
+            });
+        }
     }
 
     const del = (title) => {
@@ -57,7 +73,24 @@ const ProjList = (() => {
     const get = () => {
         return list
     }
-    return { sortAsc, sortDesc, add, del, get }
+
+    const getCurrentIndex = () => {
+        const selectedProj = document.querySelector("#project-list > .selected");
+        const listProj = ProjList.get();
+        for (let i = 0; i < listProj.length; i++) {
+            if (listProj[i].title == selectedProj.textContent) return i
+        }
+    }
+
+    const addToDo = (todo) => {
+        list[getCurrentIndex()].tasks.add(todo);
+    }
+
+    const getTasks = () => {
+        return list[getCurrentIndex()].tasks.get()
+    }
+
+    return { sortAsc, sortDesc, add, del, get, addToDo, getTasks }
 })();
 
 export {ProjList, ToDoList}

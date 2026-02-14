@@ -1,20 +1,27 @@
 import { removeClass } from "./helpers.js";
+import { ProjList } from "./Lists.js";
+import { renderTasks } from "./Tasks.js";
 
 const navbar = document.querySelector("#sidebar-section-container");
 const tasks = navbar.querySelectorAll("section:nth-child(1) button");
-const projects = getProjects();
+const addProj = document.querySelector("#add-proj-btn");
+let projects = getProjects();
+
+function printTxt(nodeL) {
+    console.log("Printing node list:")
+    nodeL.forEach(n => console.log(n.textContent));
+}
 
 function getProjects() {
-    let projs = document.querySelectorAll("#project-list > *:not(:last-child)");
-    if (projs.length == 0) {
+    ProjList.get().forEach((proj) => {
         const defaultProj = document.createElement("button");
-        defaultProj.textContent = "Default Project";
+        defaultProj.textContent = proj.title;
         document.querySelector("#project-list").
-        insertBefore(defaultProj, document.querySelector("#add-proj-btn"));
-        let newproj = document.querySelectorAll("#project-list > *:not(:last-child)")
-        return newproj;
-    }
-    else return projs
+        insertBefore(defaultProj, addProj);
+    });
+    const newproj = document.querySelectorAll("#project-list > *:not(:last-child)")
+    // printTxt(newproj);
+    return newproj;
 }
 
 function addBtnSelected(btnList) {
@@ -23,27 +30,39 @@ function addBtnSelected(btnList) {
             removeClass(btnList, "selected");
             btn.setAttribute("class", "selected");
             const selectedTask = document.querySelector("section:first-child div > button.selected");
-            const selectedProj = document.querySelector("#project-list > .selected:not(:last-child)");
-            
-            const headerContainer = document.querySelector(".header-container");
+            const selectedProj = document.querySelector("#project-list > .selected");
 
-            const projHeader = document.createElement("header");
+            const projHeader = document.querySelector(".proj-header");
             projHeader.textContent = selectedProj.textContent;
-            projHeader.setAttribute('class', 'proj-header');
 
-            const taskHeader = document.createElement("header");
+            const taskHeader = document.querySelector(".task-header");
             taskHeader.textContent = selectedTask.textContent;
-            taskHeader.setAttribute('class', 'task-header');
             
-            headerContainer.innerHTML = "";
-            headerContainer.appendChild(projHeader);
-            headerContainer.appendChild(taskHeader);
+            renderTasks();
         })
     })
 };
 
-// function addProject() {
-//     const btn = navbar.
-// }
+addProj.addEventListener("click", () => {
+    const newProjTitle = prompt("Enter new project title", `Default Project ${ProjList.get().length + 1}`);
+    if (newProjTitle != null && newProjTitle != "") {
+        ProjList.add(newProjTitle);
+        console.log(ProjList.get());
+        removeRenderedProjs();
+        projects = getProjects();
+        addBtnSelected(projects);
 
-export {navbar, addBtnSelected, projects, tasks}
+        projects.forEach(proj => {
+            if (proj.textContent == newProjTitle) proj.click();
+        });
+    }
+});
+
+function removeRenderedProjs() {
+    const projectsList = document.querySelector("#project-list");
+    projects.forEach((proj) => {
+        projectsList.removeChild(proj);
+    });
+}
+
+export {navbar, addBtnSelected, projects, tasks }
