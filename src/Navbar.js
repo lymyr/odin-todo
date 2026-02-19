@@ -1,15 +1,78 @@
 import { removeClass } from "./helpers.js";
 import { ProjList } from "./Lists.js";
 import { renderTasks } from "./Tasks.js";
+import { closePopup } from "./TasksBar.js";
 
 const navbar = document.querySelector("#sidebar-section-container");
 const tasks = navbar.querySelectorAll("section:nth-child(1) button");
-const addProj = document.querySelector("#add-proj-btn");
+const addProjBtn = document.querySelector("#add-proj-btn");
 let projects = getProjects();
+const editProjBtn = document.querySelector(".project-header-edit button");
+editProjects(editProjBtn);
 
-function printTxt(nodeL) {
-    console.log("Printing node list:")
-    nodeL.forEach(n => console.log(n.textContent));
+
+addProjBtn.addEventListener("click", () => {
+    const newProjTitle = prompt("Enter new project title", `Project ${ProjList.get().length + 1}`);
+    editProjBtn.textContent = "Edit";
+    if (newProjTitle != null && newProjTitle != "") {
+        ProjList.add(newProjTitle);
+        removeRenderedProjs();
+        projects = getProjects();
+        addBtnSelected(projects);
+        addClosePopup(projects);
+
+        projects.forEach(proj => {
+            if (proj.textContent == newProjTitle) proj.click();
+        });
+    }
+});
+
+function editProjects(elem) {
+    elem.addEventListener("click", () => {
+        if (elem.textContent == "Edit") {
+            removeRenderedProjs();
+            renderProjAsInp();
+            elem.textContent = "Save";
+        }
+        else {
+            elem.textContent = "Edit";
+            const newProjTitles = [];
+            getRenderedProjects().forEach((proj) => newProjTitles.push(proj.querySelector("input").value));
+            ProjList.renameProjs(newProjTitles);
+            removeRenderedProjs();
+            projects = getProjects();
+            addBtnSelected(projects);
+            addClosePopup(projects);
+            projects[0].click();
+        }
+    });
+}
+
+function renderProjAsInp() {
+    ProjList.get().forEach((proj) => {
+        const inputButton = document.createElement("div");
+        inputButton.setAttribute("class", "proj-input-button");
+        const defaultProj = document.createElement("input");
+        const delBtn = document.createElement("button");
+        addDeleteProject(delBtn, proj);
+        defaultProj.value = proj.title;
+        delBtn.textContent = "🗑️";
+        inputButton.appendChild(defaultProj);
+        inputButton.appendChild(delBtn);
+        document.querySelector("#project-list").
+        insertBefore(inputButton, addProjBtn);
+    });
+}
+
+function addDeleteProject(elem, proj) {
+    elem.addEventListener("click", () => {
+        ProjList.del(proj);
+        removeRenderedProjs();
+        renderProjAsInp();
+    });
+}
+function getRenderedProjects() {
+    return document.querySelectorAll("#project-list > *:not(:last-child)")
 }
 
 function getProjects() {
@@ -17,11 +80,10 @@ function getProjects() {
         const defaultProj = document.createElement("button");
         defaultProj.textContent = proj.title;
         document.querySelector("#project-list").
-        insertBefore(defaultProj, addProj);
+        insertBefore(defaultProj, addProjBtn);
     });
-    const newproj = document.querySelectorAll("#project-list > *:not(:last-child)")
-    // printTxt(newproj);
-    return newproj;
+
+    return getRenderedProjects();
 }
 
 function addBtnSelected(btnList) {
@@ -37,30 +99,21 @@ function addBtnSelected(btnList) {
 
             const taskHeader = document.querySelector(".task-header");
             taskHeader.textContent = selectedTask.textContent;
-            
+
             renderTasks();
-        })
-    })
+        });
+    });
 };
 
-addProj.addEventListener("click", () => {
-    const newProjTitle = prompt("Enter new project title", `Default Project ${ProjList.get().length + 1}`);
-    if (newProjTitle != null && newProjTitle != "") {
-        ProjList.add(newProjTitle);
-        console.log(ProjList.get());
-        removeRenderedProjs();
-        projects = getProjects();
-        addBtnSelected(projects);
-
-        projects.forEach(proj => {
-            if (proj.textContent == newProjTitle) proj.click();
-        });
-    }
-});
+function addClosePopup(btnList) {
+    btnList.forEach(btn => {
+        btn.addEventListener("click", closePopup);
+    });
+}
 
 function removeRenderedProjs() {
     const projectsList = document.querySelector("#project-list");
-    projects.forEach((proj) => {
+    getRenderedProjects().forEach((proj) => {
         projectsList.removeChild(proj);
     });
 }

@@ -23,7 +23,10 @@
                 </div>
             </section>
             <section>
-                <h3>Projects</h3>
+                <div class="project-header-edit">
+                    <h3>Projects</h3>
+                    <button>Edit</button>
+                </div>
                 <div id="project-list">
                     <button id="add-proj-btn">+ Add New Project</button>
                 </div>
@@ -42,7 +45,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Task</th>
-                        <th scope="col">Date</th>
+                        <th scope="col">Due Date</th>
                         <th scope="col">Complete</th>
                     </tr>
                 </thead>
@@ -54,8 +57,30 @@
         </section>
     </div>
 
-    <div class="popout-deets">
+
+    <div class="popout-deets" style="display: none">
         <button class="close">X</button>
+        <form class="task-deets">
+            <div class="label-input">
+                <label for="title">Title</label>
+                <input id="title" name="title" placeholder="Do science module 3">
+            </div>
+            <div class="label-input">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Remember to include references for outside sources"></textarea>
+            </div>
+            <div class="label-input">
+                <label for="due-date">Due-date</label>
+                <input id="due-date" name="due-date" type="date">
+            </div>
+            <div class="label-input">
+                <label for="priority">Priority</label>
+                <input id="priority" name="priority" type="checkbox">
+            </div>
+            <div class="btn-group">
+                <button>Submit</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>

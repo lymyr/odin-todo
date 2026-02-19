@@ -36,30 +36,38 @@ h1, h2, h3, h4, h5, h6 {
 
 /* my css */
 :root {
-  --primary-bg-color: rgb(250, 250, 250);
-  --primary-text-color: rgb(41, 41, 41);
-  --subtle-gray-color: rgb(236, 236, 236);
-  --darker-gray-color: rgb(201, 201, 201);
-  --btn-hover-color: rgb(201, 201, 201);
+  --bg-color: rgb(250, 250, 250);
+  --darker-text-color: rgb(41, 41, 41);
+  --lighter-text-color: white;
+  --nav-color: rgb(136, 66, 66);
+  --nav-color-darker: rgb(70, 37, 37);
+  --nav-selected: rgb(94, 40, 40);
+  --nav-color-hover: rgb(179, 96, 96);
 
   font-family: Arial, Helvetica, sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 body {
-  background-color: var(--primary-bg-color);
-  color: var(--primary-text-color);
+  background-color: var(--bg-color);
+  color: var(--darker-text-color);
   display: grid;
   grid-template-columns: 240px 1fr;
   grid-template-rows: 100vh;
 }
 
+/* || Navigation section */
 aside {
   padding:24px 16px;
   box-shadow: 1px 1px 12px rgb(165, 165, 165);
-  background-color: var(--subtle-gray-color);
+  background-color: var(--nav-color);
   color: var(--primary-text-color);
   display: flex;
   flex-direction: column;
+  color: var(--lighter-text-color);
 }
 
 aside header {
@@ -71,18 +79,24 @@ aside header {
   justify-content: center;
 }
 
-#sidebar-section-container button {
+#sidebar-section-container button, #sidebar-section-container input {
   border: none;
   text-align: left;
   padding: 8px 12px;
   background-color: transparent;
+  color: var(--lighter-text-color);
+}
+#sidebar-section-container input {
+  background-color: white;
+  color: var(--darker-text-color);
 }
 #sidebar-section-container button:hover {
-  background-color: var(--btn-hover-color);
+  background-color: var(--nav-color-hover);
+  cursor: pointer;
 }
 
 #sidebar-section-container button.selected {
-  background-color: rgb(165, 165, 165);
+  background-color: var(--nav-selected);
 }
 
 #sidebar-section-container > section div {
@@ -97,11 +111,55 @@ aside header {
 }
 
 #sidebar-section-container h3 {
-  border-bottom: 1px solid var(--darker-gray-color);
+  border-bottom: 1px solid var(--lighter-text-color);
   padding-bottom: 2px;
   margin-bottom: 8px;
 }
 
+/* edit button in nav */
+#sidebar-section-container .project-header-edit {
+  position: relative;
+}
+#sidebar-section-container .project-header-edit button {
+  position: absolute;
+  right: 0;
+  padding: 0;
+}
+#sidebar-section-container .project-header-edit button:hover {
+  cursor: pointer;
+  background-color: transparent;
+  opacity: 75%;
+}
+
+#sidebar-section-container .proj-input-button {
+  display: flex;
+  flex-direction: row;
+  gap:4px;
+  margin-block: 2px;
+  position: relative;
+}
+#sidebar-section-container .proj-input-button input {
+  width: 100%;
+  padding-right: 24px;
+}
+#sidebar-section-container .proj-input-button input:focus {
+  outline: none;
+}
+#sidebar-section-container .proj-input-button button {
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  padding-inline: 0;
+  padding-right: 4px;
+  right: 0px
+}
+#sidebar-section-container .proj-input-button button:hover {
+  background-color: rgb(255, 255, 255);
+}
+#sidebar-section-container .proj-input-button:has(button:hover) {
+  opacity: 80%;
+}
+
+/* || main section  */
 #todo-container {
   padding: 32px;
 }
@@ -117,28 +175,100 @@ aside header {
   font-weight: bold;
 }
 
+table {
+  border-collapse: collapse;
+  border: none;
+  font-size: clamp(0.75rem, calc(0.2vw + 0.6rem), 1rem);
+  width: 100%;
+  box-shadow: 1px 1px 8px rgb(211, 211, 211);
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+tbody td:nth-child(1) {
+  font-size: clamp(0.9rem, calc(0.25vw + 0.7rem), 1.1rem);
+}
+th, td {
+  width: 70%;
+  padding-inline: 2vw;
+}
+
+th {
+  font-size: clamp(0.9rem, calc(0.2vw + 0.9rem), 1.2rem);
+  background-color: var(--nav-color);
+  color: var(--lighter-text-color);
+  padding-block: 20px;
+}
+td {
+  padding-block: 14px;
+}
+
+td:nth-child(2), th:nth-child(2) {
+  width: 30%;
+}
+
+td:last-child, th:last-child {
+  width: fit-content;
+}
+td:has(input) {
+  text-align: center;
+}
+td input {
+  --checkbox-size: clamp(0.9rem, calc(0.2vw + 0.9rem), 1.2rem);
+  height: var(--checkbox-size);
+  width: var(--checkbox-size);
+  cursor: pointer;
+}
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover {
+  background-color: rgb(228, 228, 228);
+}
+
+tbody tr:nth-child(2n - 1) {
+  background-color: rgb(255, 198, 183);
+}
+tbody tr:nth-child(2n - 1):hover {
+  background-color: rgb(233, 171, 156);;
+}
+
+table+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+}
+
+ /* || popup form css */
 .popout-deets {
   display: none;
   padding: 16px;
-  background-color: var(--darker-gray-color);
-  box-shadow: -2px 2px 4px rgb(145, 145, 145);
+  background-color: rgb(250, 250, 250);
+  box-shadow: -2px 2px 4px rgb(218, 218, 218);
 }
 
 .close {
   background-color: var(--subtle-gray-color);
   border: none;
-  padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: 4px;
+  font-weight: bold;
   margin-bottom: 12px;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  left: -12px;
+  top: -8px;
 }
 .close:hover {
-  background-color: var(--btn-hover-color);
+  background-color: rgb(122, 74, 74);
+  background-color: var(--nav-color);
+  color:var(--lighter-text-color);
 }
 
 .task-deets {
   display:flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 
 .task-deets input, .task-deets textarea {
@@ -165,6 +295,12 @@ aside header {
 .label-input {
   display:flex;
   flex-direction: column;
+  gap: 4px;
+}
+
+label[for="title"]::after {
+  content: "*";
+  color: rgb(201, 0, 0);
 }
 
 .label-input:nth-child(4) {
@@ -173,36 +309,35 @@ aside header {
   gap:8px
 }
 
-table {
-  border-collapse: collapse;
-  border: 2px solid rgb(140 140 140);
-  font-size: clamp(0.75rem, calc(0.2vw + 0.6rem), 1rem);;
-  width: 100%;
-  box-shadow: 1px 1px 8px rgb(179, 179, 179);
-  margin-bottom: 12px;
+td[colspan="3"] {
+  background-color: white;
+  cursor:default;
 }
 
-th {
-  font-size: clamp(0.9rem, calc(0.2vw + 0.9rem), 1.2rem);
+tr.urgent td:nth-child(1) {
+  position: relative;
+}
+tr.urgent td:nth-child(1)::after {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: "!";
+  font-weight: bold;
+  position: absolute;
+  color:rgb(255, 255, 255);
+  background-color: rgb(252, 84, 84);
+
+  top:8px;
+  left: -8px;
+  --size: 16px;
+  height:var(--size);
+  width: var(--size);
+  padding: 4px;
+  border-radius: 30px;
 }
 
-th,
-td {
-  border: 1px solid rgb(160 160 160);
-  width: 80%;
-  padding: 8px 16px;
-}
-td:nth-child(2), th:nth-child(2) {
-  width: 20%;
-}
-td:last-child, th:last-child {
-  width: fit-content;
-}
-td:has(input) {
-  text-align: center;
-}
-td input {
-  --checkbox-size: 16px;
-  height: var(--checkbox-size);
-  width: var(--checkbox-size);
+tr.urgent:hover td:nth-child(1)::after {
+  background-color: rgb(255, 25, 25);
+  --size: 17px;
+  box-shadow: 1px 1px 4px rgb(133, 133, 133);
 }
