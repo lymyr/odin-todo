@@ -1,20 +1,37 @@
 import { compareAsc, format } from "date-fns";
 
+class ListSorter {
+    static priority(list) {
+        list.sort((a) => a.priority != true);
+    }
+    static dueDate(list) {
+        list.sort((a, b) => {
+            if (a.dueDate == b.dueDate) return 0;
+            else if (a.dueDate == "") return 1;
+            else if (b.dueDate == "") return -1;
+            else return compareAsc(a.dueDate, b.dueDate);
+        });
+    }
+
+    static urgent(list) {
+        list.sort((a, b) => {
+            if (a.priority == b.priority) return 0;
+            else if (a.priority == true) return 1;
+            else -1
+        });
+    }
+}
+
 class ToDoList {
     constructor() {
         this.list = [];
         this.id = crypto.randomUUID();
     }
     
-    add(todo) { 
-        if (this.validateToDo(todo)) {
-            this.list.push(todo);
-            this.sortPrio();
-        };
-     }
+    add(todo) { if (this.validateToDo(todo)) this.list.push(todo); }
     del(todo) { this.list.splice(this.list.indexOf(todo), 1); }
     get() {
-        this.sortDueDate()
+        ListSorter.dueDate(this.list);
         return this.list;
     }
 
@@ -44,32 +61,9 @@ class ToDoList {
                 this.list[i].description = desc;
                 this.list[i].dueDate = due;
                 this.list[i].priority = prio;
-                this.sortPrio();
                 break;
             }
         }
-    }
-
-    sortPrio() {
-        this.list.sort((a) => a.priority != "Urgent");
-    }
-
-    sortDueDate() {
-        this.list.sort((a, b) => {
-            if (a.dueDate == b.dueDate) return 0;
-            else if (a.dueDate == "") return 1;
-            else if (b.dueDate == "") return -1;
-            else return compareAsc(a.dueDate, b.dueDate);
-        });
-    }
-    
-    sortUrgent() {
-        this.list.sort((a, b) => {
-            if (a.priority == b.priority) this.sortDueDateAsc();
-            else if (a.priority == true) return true;
-            else false
-        });
-        this.sortPrio();
     }
 
     // placeholder for validation if ever
