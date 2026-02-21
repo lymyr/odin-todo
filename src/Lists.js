@@ -95,14 +95,6 @@ const ProjList = (() => {
         }
     ];
 
-    const sortAsc = () => {
-        list.sort()
-    };
-
-    const sortDesc = () => {
-        list.sort((a, b) => a < b)
-    };
-
     const add = (projTitle) => {
         let create = validateTitle(projTitle);
         if (create) {
@@ -198,7 +190,7 @@ const ProjList = (() => {
         return create
     }
 
-    return { sortAsc, sortDesc, add, del, get, addToDo,
+    return { add, del, get, addToDo,
         getTasks, getCurrentTasks, getUrgentTasks,
         deleteTask, updateTask, renameProjs }
 })();
