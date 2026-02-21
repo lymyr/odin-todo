@@ -20,6 +20,13 @@ class ListSorter {
             else -1
         });
     }
+
+    static projTitle(list) {
+        list.sort((a, b) => {
+            if (a.title > b.title) return 1
+            else -1
+        });
+    }
 }
 
 class ToDoList {
@@ -35,7 +42,7 @@ class ToDoList {
         return this.list;
     }
 
-    getToday() {
+    get today() {
         const currentTasks = [];
         const currentDate = new Date();
         this.list.forEach(task => {
@@ -46,7 +53,7 @@ class ToDoList {
         return currentTasks;
     }
 
-    getUrgent() {
+    get urgent() {
         const urgentTasks = [];
         this.list.forEach(task => {
             if (task.priority) urgentTasks.push(task);
@@ -90,12 +97,14 @@ const ProjList = (() => {
     ];
 
     const add = (projTitle) => {
+        projTitle = projTitle.charAt(0).toUpperCase() + projTitle.slice(1);
         let create = validateTitle(projTitle);
         if (create) {
             list.push({
                 title: projTitle, 
                 tasks: new ToDoList()
             });
+            ListSorter.projTitle(list);
         }
     }
 
@@ -125,11 +134,11 @@ const ProjList = (() => {
     }
 
     const getCurrentTasks = () => {
-        return list[getCurrentIndex()].tasks.getToday();
+        return list[getCurrentIndex()].tasks.today;
     }
 
     const getUrgentTasks = () => {
-        return list[getCurrentIndex()].tasks.getUrgent();
+        return list[getCurrentIndex()].tasks.urgent;
     }
 
     const deleteTask = (todo) => {

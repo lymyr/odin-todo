@@ -10,9 +10,15 @@ let projects = getProjects();
 const editProjBtn = document.querySelector(".project-header-edit button");
 editProjects(editProjBtn);
 
+function newProj() {
+    const projs = ProjList.get().map(list => {return list.title});
+    let projLength = projs.length + 1;
+    while (projs.indexOf(`Project ${projLength}`) != -1) projLength += 1;
+    return prompt("Enter new project title", `Project ${projLength}`);
+}
 
 addProjBtn.addEventListener("click", () => {
-    const newProjTitle = prompt("Enter new project title", `Project ${ProjList.get().length + 1}`);
+    const newProjTitle = newProj();
     editProjBtn.textContent = "Edit";
     if (newProjTitle != null && newProjTitle != "") {
         ProjList.add(newProjTitle);
