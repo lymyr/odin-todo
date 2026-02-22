@@ -1,100 +1,33 @@
-import { compareAsc, format } from "date-fns";
-
-class ListSorter {
-    static priority(list) {
-        list.sort((a) => a.priority != true);
-    }
-    static dueDate(list) {
-        list.sort((a, b) => {
-            if (a.dueDate == b.dueDate) return 0;
-            else if (a.dueDate == "") return 1;
-            else if (b.dueDate == "") return -1;
-            else return compareAsc(a.dueDate, b.dueDate);
-        });
-    }
-
-    static urgent(list) {
-        list.sort((a, b) => {
-            if (a.priority == b.priority) return 0;
-            else if (a.priority == true) return 1;
-            else -1
-        });
-    }
-
-    static projTitle(list) {
-        list.sort((a, b) => {
-            if (a.title > b.title) return 1
-            else -1
-        });
-    }
-}
+import { ListHelper, ListSorter } from "./helpers.js";
+import { ToDo } from "./ToDo.js";
+import { addDays } from "date-fns";
 
 class ToDoList {
     constructor() {
         this.list = [];
         this.id = crypto.randomUUID();
     }
-    
-    add(todo) { if (this.validateToDo(todo)) this.list.push(todo); }
-    del(todo) { this.list.splice(this.list.indexOf(todo), 1); }
-    get() {
-        ListSorter.dueDate(this.list);
-        return this.list;
-    }
-
-    get today() {
-        const currentTasks = [];
-        const currentDate = new Date();
-        this.list.forEach(task => {
-            if (task.dueDate != "") {
-                if (format(task.dueDate, "yyyy-LL-dd") == format(currentDate, "yyyy-LL-dd")) currentTasks.push(task);
-            }
-        });
-        return currentTasks;
-    }
-
-    get urgent() {
-        const urgentTasks = [];
-        this.list.forEach(task => {
-            if (task.priority) urgentTasks.push(task);
-        });
-        return urgentTasks;
-    }
-
-    update(title, desc, due, prio, todoID) {
-        for (let i = 0; i < this.list.length; i++) {
-            if (this.list[i].id == todoID && this.validateTitle(title)) {
-                this.list[i].title = title;
-                this.list[i].description = desc;
-                this.list[i].dueDate = due;
-                this.list[i].priority = prio;
-                break;
-            }
-        }
-    }
-
-    // placeholder for validation if ever
-    validateToDo(todo) {
-        let create = true;
-        create = this.validateTitle(todo.title);
-        return create;
-    }
-    validateTitle(title) {
-        if (title == "" || title == null) {
-            alert("Task title can't be empty");
-            return false
-        }
-        else return true
-    }
 }
 
 const ProjList = (() => {
-    const list = [
-        {
-            title: "Default Project",
-            tasks: new ToDoList(),
-        }
-    ];
+    let list;
+    if (localStorage.ProjectList) {
+        list = ListHelper.parse(localStorage.ProjectList)
+    } 
+    else {
+        list = [
+            {
+                title: "Default Project",
+                tasks: ListHelper.addFuncToDoList(new ToDoList()),
+            }
+        ];
+
+        // demo purposes
+        list[0].tasks.add(new ToDo("Buy Birthday Card", "Pick up a funny card for friend’s birthday party this weekend.", "", false));
+        list[0].tasks.add(new ToDo("Check the description", "Calculate how many days between today and the due date of this task", addDays(new Date(), 67), false));
+        list[0].tasks.add(new ToDo("WATCH ONE PIECE", "The best anime/manga series of all time.", new Date(), true));
+        list[0].tasks.add(new ToDo("Do homework", "No more lazy lazy", addDays(new Date(), 3), true));
+    }
 
     const add = (projTitle) => {
         projTitle = projTitle.charAt(0).toUpperCase() + projTitle.slice(1);
@@ -102,14 +35,18 @@ const ProjList = (() => {
         if (create) {
             list.push({
                 title: projTitle, 
-                tasks: new ToDoList()
+                tasks: ListHelper.addFuncToDoList(new ToDoList())
             });
             ListSorter.projTitle(list);
+            ListHelper.store(list);
         }
     }
 
     const del = (proj) => {
-        if (list.length > 1) list.splice(list.indexOf(proj), 1);
+        if (list.length > 1) {
+            list.splice(list.indexOf(proj), 1);
+            ListHelper.store(list);
+        }
         else alert("Delete Failed: Must have at least one project");
     }
     
@@ -127,26 +64,30 @@ const ProjList = (() => {
 
     const addToDo = (todo) => {
         list[getCurrentIndex()].tasks.add(todo);
+        ListHelper.store(list);
     }
 
     const getTasks = () => {
+        console.log(list)
         return list[getCurrentIndex()].tasks.get();
     }
 
     const getCurrentTasks = () => {
-        return list[getCurrentIndex()].tasks.today;
+        return list[getCurrentIndex()].tasks.getToday();
     }
 
     const getUrgentTasks = () => {
-        return list[getCurrentIndex()].tasks.urgent;
+        return list[getCurrentIndex()].tasks.getUrgent();
     }
 
     const deleteTask = (todo) => {
         list[getCurrentIndex()].tasks.del(todo);
+        ListHelper.store(list);
     }
 
     const updateTask = (title, desc, due, prio, id) => {
         list[getCurrentIndex()].tasks.update(title, desc, due, prio, id);
+        ListHelper.store(list);
     }
 
     const renameProjs = (inputArr) => {
@@ -155,6 +96,7 @@ const ProjList = (() => {
             list.map((proj, index) => {
                 proj.title = inputArr[index];
             });
+            ListHelper.store(list);
         }
     }
 
