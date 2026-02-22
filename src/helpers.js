@@ -102,8 +102,35 @@ class ListHelper {
         }
         else return false
     }
-    static doesExist(title, list) {
-        
+
+    // placeholder for validation if ever
+    static validateProjectTitle(title, projList, rename=false) {
+        let create = true;
+        if (rename) {
+            const inputArr = title; // readability purposes when input is an array of titles
+            inputArr.forEach((inp, index) => {
+                if (ListHelper.isTitleEmpty(inp)) { create = false; }
+                else {
+                    for (let i = index + 1; i < inputArr.length; i++) {
+                        if (inp == inputArr[i]) {
+                            create = false;
+                            alert(`"${inputArr[i]}" already exists`);
+                        }
+                    }
+                }
+            });
+        }
+        else if (ListHelper.isTitleEmpty(title)) { create = false; } 
+        else {
+            console.log(projList)
+            projList.forEach((proj) => {
+                if (proj.title == title) {
+                    alert(`"${title}" already exists`);
+                    create = false;
+                }
+            });
+        }
+        return create
     }
 }
 

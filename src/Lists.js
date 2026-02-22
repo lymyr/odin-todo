@@ -31,7 +31,7 @@ const ProjList = (() => {
 
     const add = (projTitle) => {
         projTitle = projTitle.charAt(0).toUpperCase() + projTitle.slice(1);
-        let create = validateTitle(projTitle);
+        let create = ListHelper.validateProjectTitle(projTitle, list);
         if (create) {
             list.push({
                 title: projTitle, 
@@ -91,48 +91,13 @@ const ProjList = (() => {
     }
 
     const renameProjs = (inputArr) => {
-        let create = validateTitle(inputArr, true);
+        let create = ListHelper.validateProjectTitle(inputArr, list, true);
         if (create) {
             list.map((proj, index) => {
                 proj.title = inputArr[index];
             });
             ListHelper.store(list);
         }
-    }
-
-    // placeholder for validation if ever
-    function validateTitle(title, rename=false) {
-        let create = true;
-        if (rename) {
-            const inputArr = title;
-            inputArr.forEach((inp, index) => {
-                if (inp == "") {
-                    create = false;
-                    alert("Title can't be empty");
-                } 
-                else {
-                    for (let i = index + 1; i < inputArr.length; i++) {
-                        if (inp == inputArr[i]) {
-                            create = false;
-                            alert(`"${inputArr[i]}" already exists`);
-                        }
-                    }
-                }
-            });
-        }
-        else if (title == "" || title == null) {
-            create = false;
-            alert("Title can't be empty");
-        } else {
-            list.forEach((proj) => {
-                if (proj.title == title) {
-                    alert(`"${title}" already exists`);
-                    create = false;
-                }
-            });
-        }
-        
-        return create
     }
 
     return { add, del, get, addToDo,
