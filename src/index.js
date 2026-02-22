@@ -1,8 +1,5 @@
 import './styles.css';
 import { addBtnSelected, projects, tasks } from './Navbar.js';
-import { ToDo } from './ToDo.js';
-import { ProjList } from './Lists.js';
-import { addDays } from 'date-fns';
 
 // set initial stuffs to avoid errors
 function initialLoad() {
