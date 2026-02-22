@@ -18,7 +18,9 @@ function newProj() {
 }
 
 addProjBtn.addEventListener("click", () => {
-    const newProjTitle = newProj();
+    let newProjTitle = newProj();
+    newProjTitle = newProjTitle.charAt(0).toUpperCase() + newProjTitle.slice(1);
+
     editProjBtn.textContent = "Edit";
     if (newProjTitle != null && newProjTitle != "") {
         ProjList.add(newProjTitle);
@@ -26,7 +28,7 @@ addProjBtn.addEventListener("click", () => {
         projects = getProjects();
         addBtnSelected(projects);
         addClosePopup(projects);
-
+    
         projects.forEach(proj => {
             if (proj.textContent == newProjTitle) proj.click();
         });
