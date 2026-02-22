@@ -122,7 +122,6 @@ class ListHelper {
         }
         else if (ListHelper.isTitleEmpty(title)) { create = false; } 
         else {
-            console.log(projList)
             projList.forEach((proj) => {
                 if (proj.title == title) {
                     alert(`"${title}" already exists`);

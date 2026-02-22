@@ -68,7 +68,6 @@ const ProjList = (() => {
     }
 
     const getTasks = () => {
-        console.log(list)
         return list[getCurrentIndex()].tasks.get();
     }
 
